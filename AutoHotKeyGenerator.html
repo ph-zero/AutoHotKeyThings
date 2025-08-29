@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AutoHotkey Script Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #2c3e50, #1a1a2e);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #6cbbf2;
+        }
+        
+        .subtitle {
+            color: #a8d8ea;
+            font-size: 1.1rem;
+        }
+        
+        .instructions {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .form-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .key-input {
+            background-color: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .key-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #6cbbf2;
+        }
+        
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 16px;
+        }
+        
+        input[type="text"]:focus {
+            outline: 2px solid #6cbbf2;
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        #generate-btn {
+            background: linear-gradient(to right, #3498db, #2980b9);
+            color: white;
+        }
+        
+        #generate-btn:hover {
+            background: linear-gradient(to right, #2980b9, #3498db);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        #copy-btn {
+            background: linear-gradient(to right, #2ecc71, #27ae60);
+            color: white;
+        }
+        
+        #copy-btn:hover {
+            background: linear-gradient(to right, #27ae60, #2ecc71);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        #reset-btn {
+            background: linear-gradient(to right, #e74c3c, #c0392b);
+            color: white;
+        }
+        
+        #reset-btn:hover {
+            background: linear-gradient(to right, #c0392b, #e74c3c);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .output-container {
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .output-title {
+            font-size: 1.3rem;
+            color: #6cbbf2;
+        }
+        
+        #output {
+            background-color: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 5px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            white-space: pre-wrap;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AutoHotkey Script Generator</h1>
+            <p class="subtitle">Create custom scripts for Shift + Function key combinations</p>
+        </header>
+        
+        <div class="instructions">
+            <p>This tool generates an AutoHotkey script that will output custom text when you press Shift + any function key (F1 to F12).</p>
+            <p>Simply enter the text you want each key combination to produce, then click "Generate Script".</p>
+        </div>
+        
+        <div class="form-container">
+            <!-- F1 to F12 inputs will be generated by JavaScript -->
+        </div>
+        
+        <div class="buttons">
+            <button id="generate-btn">Generate Script</button>
+            <button id="copy-btn">Copy to Clipboard</button>
+            <button id="reset-btn">Reset Form</button>
+        </div>
+        
+        <div class="output-container">
+            <div class="output-header">
+                <h3 class="output-title">Generated AutoHotkey Script</h3>
+            </div>
+            <pre id="output">; Your AutoHotkey script will appear here
+; Fill out the form above and click "Generate Script"</pre>
+        </div>
+        
+        <div class="footer">
+            <p>Note: To use this script, save it as a .ahk file and run it with AutoHotkey installed on your system.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const formContainer = document.querySelector('.form-container');
+            const generateBtn = document.getElementById('generate-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const resetBtn = document.getElementById('reset-btn');
+            const output = document.getElementById('output');
+            
+            // Create input fields for F1 to F12
+            for (let i = 1; i <= 12; i++) {
+                const keyInput = document.createElement('div');
+                keyInput.className = 'key-input';
+                keyInput.innerHTML = `
+                    <label class="key-label" for="f${i}">Shift + F${i}:</label>
+                    <input type="text" id="f${i}" placeholder="Text to output when Shift+F${i} is pressed">
+                `;
+                formContainer.appendChild(keyInput);
+            }
+            
+            // Generate script
+            generateBtn.addEventListener('click', function() {
+                let script = `; AutoHotkey Script Generated by Support Tools - Phillipe Correia on ${new Date().toLocaleDateString()}
+; Shift + Function Key Text Expander
+
+#NoEnv
+SendMode Input
+SetWorkingDir %A_ScriptDir%
+                
+; Shift + Function key hotkeys with text output
+`;
+                
+                for (let i = 1; i <= 12; i++) {
+                    const text = document.getElementById(`f${i}`).value.trim();
+                    if (text) {
+                        script += `
++F${i}::
+    Send, ${text}
+    Return
+`;
+                    }
+                }
+                
+                script += `
+; Add more hotkeys as needed
+
+Esc::
+    MsgBox, Exit Script? Press OK to exit
+    ExitApp
+Return
+`;
+                
+                output.textContent = script;
+            });
+            
+            // Copy to clipboard
+            copyBtn.addEventListener('click', function() {
+                const textarea = document.createElement('textarea');
+                textarea.value = output.textContent;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                
+                // Show confirmation
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                }, 2000);
+            });
+            
+            // Reset form
+            resetBtn.addEventListener('click', function() {
+                for (let i = 1; i <= 12; i++) {
+                    document.getElementById(`f${i}`).value = '';
+                }
+                output.textContent = `; Your AutoHotkey script will appear here
+; Fill out the form above and click "Generate Script"`;
+            });
+        });
+    </script>
+</body>
+</html>
